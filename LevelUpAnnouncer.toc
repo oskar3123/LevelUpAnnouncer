@@ -1,0 +1,11 @@
+## Interface: 70200
+## Title: Level Up |cff2D8D0BAnnouncer|r
+## Author: oskar3123
+## Notes: A simple addon to play a sound and/or yell in chat when you level up
+## Dependencies:
+## OptDeps: BugSack, !Swatter
+## SavedVariables: LevelUpAnnouncerDB
+
+embeds.xml
+
+Core.lua
