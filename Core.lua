@@ -190,18 +190,18 @@ function LevelUpAnnouncer:PLAYER_LOGIN()
 end
 
 function LevelUpAnnouncer:PLAYER_LEVEL_UP()
-	self.tmpPercIndex = 0
-	self.curLevel = self.curLevel + 1
-	if self.db.profile.playSound then
-		PlaySoundKitID(self.db.profile.soundID)
-	end
-	if self.db.profile.chatAnnounce then
+    self.tmpPercIndex = 0
+    self.curLevel = self.curLevel + 1
+    if self.db.profile.playSound then
+        PlaySoundKitID(self.db.profile.soundID)
+    end
+    if self.db.profile.chatAnnounce then
         sendToChat(replaceFormats(self.db.profile.dingFormat, 0, self.curLevel))
-	end
+    end
 end
 
 function LevelUpAnnouncer:PLAYER_XP_UPDATE()
-	self.xpPct = UnitXP("player")/UnitXPMax("player")
+    self.xpPct = UnitXP("player")/UnitXPMax("player")
     if not self.db.profile.chatPercAnnounce then return end
     local stc = function(p) return sendToChat(replaceFormats(self.db.profile.percFormat, p, self.curLevel)) end
     if self.db.profile.reversePerc then stc = function(p) return sendToChat(replaceFormats(self.db.profile.reversePercFormat, 100 - p, self.curLevel)) end end
@@ -212,5 +212,5 @@ function LevelUpAnnouncer:PLAYER_XP_UPDATE()
     elseif self.xpPct>=0.75 and self.tmpPercIndex<3 then
         stc(75)
     end
-	self.tmpPercIndex = math.floor(self.xpPct * 4)
+    self.tmpPercIndex = math.floor(self.xpPct * 4)
 end
