@@ -1,0 +1,7 @@
+package-as: LevelUpAnnouncer
+enable-nolib-creation: no
+
+ignore:
+  - README.md
+
+license-output: LICENSE.txt

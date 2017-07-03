@@ -1,6 +1,7 @@
 LevelUpAnnouncer = LibStub("AceAddon-3.0"):NewAddon("LevelUpAnnouncer", "AceConsole-3.0", "AceEvent-3.0")
 
-local version = "2.0.2"
+local version = GetAddOnMetadata("LevelUpAnnouncer", "Version")
+local author = GetAddOnMetadata("LevelUpAnnouncer", "Author")
 
 local defaults = {
     profile = {
@@ -20,7 +21,7 @@ local options = {
     type = "group",
     args = {
         LUPHeader = {
-            name = "Level Up Announcer - by oskar3123 - version " .. version,
+            name = "Level Up Announcer - by " .. author .. " - version " .. version,
             type = "header"
         },
         LUPToggles = {
@@ -33,32 +34,32 @@ local options = {
                     name = "Enable Sound",
                     desc = "Play a sound each time you level up",
                     type = "toggle",
-                    set = function(info, value) LevelUpAnnouncer.db.profile.playSound = value end,
-                    get = function(info) return LevelUpAnnouncer.db.profile.playSound end
+                    set = function(_, value) LevelUpAnnouncer.db.profile.playSound = value end,
+                    get = function() return LevelUpAnnouncer.db.profile.playSound end
                 },
                 chatAnnounce = {
                     order = 2,
                     name = "Chat Announce",
                     desc = "Announces in chat when you level up",
                     type = "toggle",
-                    set = function(info, value) LevelUpAnnouncer.db.profile.chatAnnounce = value end,
-                    get = function(info) return LevelUpAnnouncer.db.profile.chatAnnounce end
+                    set = function(_, value) LevelUpAnnouncer.db.profile.chatAnnounce = value end,
+                    get = function() return LevelUpAnnouncer.db.profile.chatAnnounce end
                 },
                 chatPercAnnounce = {
                     order = 3,
                     name = "Percentage Announce",
                     desc = "Announces in chat when you pass a percentage barrier (25%, 50% and 75%)",
                     type = "toggle",
-                    set = function(info, value) LevelUpAnnouncer.db.profile.chatPercAnnounce = value end,
-                    get = function(info) return LevelUpAnnouncer.db.profile.chatPercAnnounce end
+                    set = function(_, value) LevelUpAnnouncer.db.profile.chatPercAnnounce = value end,
+                    get = function() return LevelUpAnnouncer.db.profile.chatPercAnnounce end
                 },
                 reversePerc = {
                     order = 4,
                     name = "Reverse Percentages",
                     desc = "Reverses the percentages in percentage announce mode (announces 75% when at 25%, 50% at 50% and 25% at 75%)",
                     type = "toggle",
-                    set = function(info, value) LevelUpAnnouncer.db.profile.reversePerc = value end,
-                    get = function(info) return LevelUpAnnouncer.db.profile.reversePerc end
+                    set = function(_, value) LevelUpAnnouncer.db.profile.reversePerc = value end,
+                    get = function() return LevelUpAnnouncer.db.profile.reversePerc end
                 }
             }
         },
@@ -73,24 +74,24 @@ local options = {
                     name = "Level Up Announce Format",
                     desc = "The format used when you level up",
                     type = "input",
-                    set = function(info, value) LevelUpAnnouncer.db.profile.dingFormat = value end,
-                    get = function(info) return LevelUpAnnouncer.db.profile.dingFormat end
+                    set = function(_, value) LevelUpAnnouncer.db.profile.dingFormat = value end,
+                    get = function() return LevelUpAnnouncer.db.profile.dingFormat end
                 },
                 percFormat = {
                     order = 2,
                     name = "Percentage Announce Format",
                     desc = "The format used when you pass a percentage barrier (25%, 50% and 75%)",
                     type = "input",
-                    set = function(info, value) LevelUpAnnouncer.db.profile.percFormat = value end,
-                    get = function(info) return LevelUpAnnouncer.db.profile.percFormat end
+                    set = function(_, value) LevelUpAnnouncer.db.profile.percFormat = value end,
+                    get = function() return LevelUpAnnouncer.db.profile.percFormat end
                 },
                 reversePercFormat = {
                     order = 3,
                     name = "Reversed Percentage Announce Format",
                     desc = "The format used when you pass a percentage barrier in reverse mode (75%, 50% and 25%)",
                     type = "input",
-                    set = function(info, value) LevelUpAnnouncer.db.profile.reversePercFormat = value end,
-                    get = function(info) return LevelUpAnnouncer.db.profile.reversePercFormat end
+                    set = function(_, value) LevelUpAnnouncer.db.profile.reversePercFormat = value end,
+                    get = function() return LevelUpAnnouncer.db.profile.reversePercFormat end
                 },
                 placeholderHelp = {
                     order = 4,
@@ -111,16 +112,16 @@ local options = {
                     type = "input",
                     pattern = "(%d)",
                     usage = "Only numbers are allowed",
-                    set = function(info, value) LevelUpAnnouncer.db.profile.soundID = tonumber(value) end,
-                    get = function(info) return tostring(LevelUpAnnouncer.db.profile.soundID) end
+                    set = function(_, value) LevelUpAnnouncer.db.profile.soundID = tonumber(value) end,
+                    get = function() return tostring(LevelUpAnnouncer.db.profile.soundID) end
                 },
                 messageMode = {
                     order = 2,
                     name = "Message Mode",
                     desc = "Modes:\nSAY\nYELL\nPARTY\nINSTANCE_CHAT\nRAID\nRAID_WARNING\nGUILD\nOFFICER\nEMOTE\nCHANNEL.X (So for channel 1 type: \"CHANNEL.1\")",
                     type = "input",
-                    set = function(info, value) LevelUpAnnouncer.db.profile.messageModeString = value end,
-                    get = function(info) return LevelUpAnnouncer.db.profile.messageModeString end
+                    set = function(_, value) LevelUpAnnouncer.db.profile.messageModeString = value end,
+                    get = function() return LevelUpAnnouncer.db.profile.messageModeString end
                 },
                 testSound = {
                     order = 3,
@@ -176,7 +177,7 @@ function LevelUpAnnouncer:OnInitialize()
     LevelUpAnnouncer:RegisterEvent("PLAYER_LEVEL_UP")
     LevelUpAnnouncer:RegisterEvent("PLAYER_XP_UPDATE")
     
-    local command = function(msg) LibStub("AceConfigDialog-3.0"):Open("LevelUpAnnouncer") end
+    local command = function() LibStub("AceConfigDialog-3.0"):Open("LevelUpAnnouncer") end
     LevelUpAnnouncer:RegisterChatCommand("levelup", command)
     LevelUpAnnouncer:RegisterChatCommand("lvlup", command)
 end
@@ -186,7 +187,7 @@ function LevelUpAnnouncer:PLAYER_LOGIN()
     self.tmpPercIndex = math.floor(self.xpPct * 4)
     self.curLevel = UnitLevel("player")
 
-    print("|cff0066FFLevel Up Announcer|r, by |cff0066FFoskar3123|r, version |cff0066FF" ..version .. "|r loaded, /" .. "|cff0066FFlevelup|r for settings.")
+    print("|cff0066FFLevel Up Announcer|r, by |cff0066FF" .. author .. "|r, version |cff0066FF" ..version .. "|r loaded, /" .. "|cff0066FFlevelup|r for settings.")
 end
 
 function LevelUpAnnouncer:PLAYER_LEVEL_UP()
