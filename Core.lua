@@ -128,7 +128,7 @@ local options = {
                     name = "Test Sound",
                     desc = "Click this to test the selected sound",
                     type = "execute",
-                    func = function() PlaySoundKitID(LevelUpAnnouncer.db.profile.soundID) end
+                    func = function() PlaySound(LevelUpAnnouncer.db.profile.soundID) end
                 }
             }
         }
@@ -194,7 +194,7 @@ function LevelUpAnnouncer:PLAYER_LEVEL_UP()
     self.tmpPercIndex = 0
     self.curLevel = self.curLevel + 1
     if self.db.profile.playSound then
-        PlaySoundKitID(self.db.profile.soundID)
+        PlaySound(self.db.profile.soundID)
     end
     if self.db.profile.chatAnnounce then
         sendToChat(replaceFormats(self.db.profile.dingFormat, 0, self.curLevel))
