@@ -208,9 +208,11 @@ function LevelUpAnnouncer:PLAYER_XP_UPDATE()
     if self.db.profile.reversePerc then stc = function(p) return sendToChat(replaceFormats(self.db.profile.reversePercFormat, 100 - p, self.curLevel)) end end
     if self.xpPct>=0.25 and self.tmpPercIndex<1 then
         stc(25)
-    elseif self.xpPct>=0.5 and self.tmpPercIndex<2 then
+    end
+    if self.xpPct>=0.5 and self.tmpPercIndex<2 then
         stc(50)
-    elseif self.xpPct>=0.75 and self.tmpPercIndex<3 then
+    end
+    if self.xpPct>=0.75 and self.tmpPercIndex<3 then
         stc(75)
     end
     self.tmpPercIndex = math.floor(self.xpPct * 4)

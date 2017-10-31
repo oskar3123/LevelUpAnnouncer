@@ -1,6 +1,6 @@
 ## Interface: 70300
 ## Title: Level Up |cff2D8D0BAnnouncer|r
-## Version: 2.0.3
+## Version: 2.0.4
 ## Author: oskar3123
 ## Notes: A simple addon to play a sound and/or yell in chat when you level up
 ## Dependencies:
