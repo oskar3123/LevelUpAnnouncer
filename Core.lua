@@ -9,6 +9,7 @@ local defaults = {
         chatAnnounce = true,
         chatPercAnnounce = false,
         reversePerc = false,
+        replaceWithEmote = true,
         dingFormat = "DING! LEVEL {LEVEL}!",
         percFormat = "{PERCENTAGE}% INTO LEVEL {LEVEL}!",
         reversePercFormat = "{PERCENTAGE}% UNTIL LEVEL {NEXTLEVEL}!",
@@ -60,6 +61,14 @@ local options = {
                     type = "toggle",
                     set = function(_, value) LevelUpAnnouncer.db.profile.reversePerc = value end,
                     get = function() return LevelUpAnnouncer.db.profile.reversePerc end
+                },
+                replaceWithEmote = {
+                    order = 5,
+                    name = "Smart Message Mode",
+                    desc = "Replace \"Message Mode\" with EMOTE if using SAY or YELL when not in an instance",
+                    type = "toggle",
+                    set = function(_, value) LevelUpAnnouncer.db.profile.replaceWithEmote = value end,
+                    get = function() return LevelUpAnnouncer.db.profile.replaceWithEmote end
                 }
             }
         },
@@ -118,7 +127,7 @@ local options = {
                 messageMode = {
                     order = 2,
                     name = "Message Mode",
-                    desc = "Modes:\nSAY\nYELL\nPARTY\nINSTANCE_CHAT\nRAID\nRAID_WARNING\nGUILD\nOFFICER\nEMOTE\nCHANNEL.X (So for channel 1 type: \"CHANNEL.1\")",
+                    desc = "Modes:\nSAY (Only works in instances)\nYELL(Only works in instances)\nPARTY\nINSTANCE_CHAT\nRAID\nRAID_WARNING\nGUILD\nOFFICER\nEMOTE\nCHANNEL.X (So for channel 1 type: \"CHANNEL.1\", only works in instances)",
                     type = "input",
                     set = function(_, value) LevelUpAnnouncer.db.profile.messageModeString = value end,
                     get = function() return LevelUpAnnouncer.db.profile.messageModeString end
@@ -153,7 +162,16 @@ local sendToChat = function(message)
     local t = split(str, ".")
     local channel
     if #t > 1 then channel = t[2] end
-    local mode = t[1]
+    local mode = string.upper(t[1])
+    local replaceWithEmote = LevelUpAnnouncer.db.profile.replaceWithEmote
+    -- SendChatMessage is hardware event protected for modes "SAY", "YELL" and "CHANNEL" when player is "outdoors"
+    if not IsInInstance() and (mode == "SAY" or mode == "YELL" or mode == "CHANNEL") then
+        if replaceWithEmote and mode ~= "CHANNEL" then
+            mode = "EMOTE"
+        else
+            return
+        end
+    end
     SendChatMessage(message, mode, nil, channel)
 end
 
